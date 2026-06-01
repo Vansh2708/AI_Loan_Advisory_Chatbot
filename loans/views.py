@@ -5,7 +5,12 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Loan
 import math
 from .serializers import LoanSerializer
+import joblib
+import os
+Model_path=os.path.join('ml_models','loan_model.pkl')
+model=joblib.load(Model_path)
 
+#Apply Loan View
 class ApplyloanView(APIView):
     permission_classes=[IsAuthenticated]
     def post(self,request):
@@ -17,12 +22,14 @@ class ApplyloanView(APIView):
                 "data":serializer.data
             })
         return Response(serializer.errors)
+#Loan History View
 class LoanHistoryView(APIView):
     permission_classes=[IsAuthenticated]
     def get(self,request):
         loans=Loan.objects.filter(user=request.user)
         serializer=LoanSerializer(loans,many=True)
         return Response(serializer.data)
+#EMI Calculator View
 class EMICalculatorView(APIView):
     permission_classes=[IsAuthenticated]
     def post(self,request):
@@ -47,6 +54,7 @@ class EMICalculatorView(APIView):
             "total_payment":round(total_payment,2),
             "total_interest":round(total_interest,2)
         })
+#Update Loan Status View
 class UpdateLoanStatusView(APIView):
     permission_classes=[IsAuthenticated]
     def patch(self,request,loan_id):
@@ -66,6 +74,7 @@ class UpdateLoanStatusView(APIView):
         return Response({
             "message":f"loan {new_status} successfully."
         })
+#Loan Detail View 
 class LoanDetailView(APIView):
     permission_classes=[IsAuthenticated]
     def get(self,request,loan_id):
@@ -80,3 +89,15 @@ class LoanDetailView(APIView):
             })
         serializer=LoanSerializer(loan)
         return Response(serializer.data)
+#Loan Eligiblity Prediction View
+class LoanEligibilityPredictionView(APIView):
+    permission_classes=[IsAuthenticated]
+    def post(self,request):
+        credit_score=int(request.data.get('credit_score'))
+        annual_income=float(request.data.get('annual_income'))
+        loan_amount=float(request.data.get('loan_amount'))
+        prediction=model.predict([[credit_score,annual_income,loan_amount]])[0]
+        result="Approved" if prediction==1 else "Rejected"
+        return Response({
+            "prediction":result
+        })
