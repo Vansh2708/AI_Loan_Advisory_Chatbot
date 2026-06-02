@@ -101,3 +101,48 @@ class LoanEligibilityPredictionView(APIView):
         return Response({
             "prediction":result
         })
+#Smart Recommendation View
+class SmartLoanRecommendationView(APIView):
+    permission_classes=[IsAuthenticated]
+    def post(self,request):
+        credit_score=int(request.data.get('credit_score'))
+        annual_income=float(request.data.get('annual_income'))
+        loan_amount=float(request.data.get('loan_amount'))
+        prediction=model.predict([[
+            credit_score,annual_income,loan_amount
+        ]])[0]
+        approval_status=(
+            "Approved"
+            if prediction==1
+            else "Rejected"
+            
+        )
+        if credit_score>=750:
+            risk_score="Low"
+        elif credit_score>=650:
+            risk_score="Medium"
+        else:
+            risk_score="High"
+        if annual_income>=1000000:
+            recommend_loan="Home Loan"
+        elif annual_income>=700000:
+            recommend_loan="Car Loan"
+        elif annual_income>=400000:
+            recommend_loan="Education Loan"
+        else:
+            recommend_loan="Personal Loan"
+        if credit_score>=750:
+            suggested_interest="8.5%"
+        elif credit_score>=650:
+            suggested_interest="10.5%"
+        else:
+            suggested_interest="14%"
+        return Response({
+            "prediction":approval_status,
+            "risk_score":risk_score,
+            "recommend_loan":recommend_loan,
+            "suggested_interest_rate":suggested_interest
+        })
+        
+            
+                    

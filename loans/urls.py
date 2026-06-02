@@ -4,7 +4,8 @@ from .views import (ApplyloanView,
                     EMICalculatorView,
                     UpdateLoanStatusView,
                     LoanDetailView,
-                    LoanEligibilityPredictionView
+                    LoanEligibilityPredictionView,
+                    SmartLoanRecommendationView
 )
 urlpatterns=[
     path('apply/',ApplyloanView.as_view()),
@@ -13,4 +14,5 @@ urlpatterns=[
     path('update-status/<int:loan_id>/',UpdateLoanStatusView.as_view()),
     path('detail/<int:loan_id>/',LoanDetailView.as_view()),
     path('predict/',LoanEligibilityPredictionView.as_view()),
+    path('smart-recommendation/',SmartLoanRecommendationView.as_view()),
     ]

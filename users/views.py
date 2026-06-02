@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 
 
 from .serializers import RegisterSerializer
-
+#Register View
 class RegisterView(APIView):
     def post(self,request):
         serializer=RegisterSerializer(data=request.data)
@@ -17,6 +17,7 @@ class RegisterView(APIView):
                 status=status.HTTP_201_CREATED
             )
         return Response(serializer.errors)
+#Profile View
 class ProfileView(APIView):
     permission_classes=[IsAuthenticated]
     def get(self,request):
