@@ -28,3 +28,4 @@ Pillow
 
 openai-whisper
 gTTS
+google-generativeai

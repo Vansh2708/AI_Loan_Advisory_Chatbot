@@ -143,6 +143,6 @@ class SmartLoanRecommendationView(APIView):
             "recommend_loan":recommend_loan,
             "suggested_interest_rate":suggested_interest
         })
-        
+     
             
                     
