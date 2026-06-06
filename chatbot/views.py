@@ -1,8 +1,14 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-
-
+from dotenv import load_dotenv
+import google.generativeai as genai 
+import os
+load_dotenv()
+genai.configure(
+    api_key=os.getenv("GEMINI_API_KEY")
+)
+model=genai.GenerativeModel("gemini-3.5-flash")
 class CustomLoanChatbotView(APIView):
 
     permission_classes = [IsAuthenticated]
@@ -87,12 +93,34 @@ class CustomLoanChatbotView(APIView):
 
         
         else:
+            prompt = f"""
+            You are an AI Loan Advisory Assistant.
+            Answer in plain text.
+            Do not use markdown.
+            Do not use headings.
+            Do not use ** symbols.
+            Do not use bullet points.
 
-            reply = (
-                "Please ask loan-related questions such as "
-                "EMI, credit score, home loan, "
-                "interest rate, or eligibility."
-            )
+            Answer questions about:
+            - Loans
+            - EMI
+            - Banking
+            - Finance
+            - Credit Score
+            - Investments
+
+            User Question:
+            {message}
+            """
+            
+            try:
+                
+                response = model.generate_content(prompt)
+
+                reply = response.text
+            except Exception as e:
+                
+                reply = f"Gemini Error: {str(e)}"
 
         return Response({
             "user_message": message,
