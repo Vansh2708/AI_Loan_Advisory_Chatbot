@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Dashboard</h2>
+
+<div class="row mb-4">
+
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h4>{{total}}</h4>
+                <p>Total Loans</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h4>{{approved}}</h4>
+                <p>Approved</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h4>{{rejected}}</h4>
+                <p>Rejected</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h4>{{pending}}</h4>
+                <p>Pending</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5>Apply Loan</h5>
+                <a href="/apply-loan/" class="btn btn-success">
+                    Open
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5>Recommendations</h5>
+                <a href="/recommendation/" class="btn btn-warning">
+                    Open
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5>AI Chatbot</h5>
+                <a href="/chatbot/" class="btn btn-info">
+                    Open
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

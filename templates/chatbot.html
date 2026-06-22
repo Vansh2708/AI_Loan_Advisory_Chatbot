@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>AI Loan Advisory Chatbot</h2>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    <textarea
+        name="message"
+        class="form-control mb-3"
+        rows="4"
+        placeholder="Ask anything about loans..."></textarea>
+
+    <button
+        class="btn btn-primary">
+
+        Ask AI
+
+    </button>
+
+</form>
+
+{% if reply %}
+
+<hr>
+
+<div class="card">
+
+    <div class="card-body">
+
+        <h5>AI Response</h5>
+
+        <p>{{ reply }}</p>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

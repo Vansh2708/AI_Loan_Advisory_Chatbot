@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Apply Loan</h2>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    <select
+        name="loan_type"
+        class="form-control mb-2">
+
+        <option value="home">
+            Home Loan
+        </option>
+
+        <option value="personal">
+            Personal Loan
+        </option>
+
+        <option value="car">
+            Car Loan
+        </option>
+
+        <option value="education">
+            Education Loan
+        </option>
+
+    </select>
+
+    <input
+        type="number"
+        name="amount"
+        class="form-control mb-2"
+        placeholder="Loan Amount">
+
+    <input
+        type="number"
+        name="tenure_years"
+        class="form-control mb-2"
+        placeholder="Tenure Years">
+
+    <button
+        class="btn btn-success">
+
+        Apply Loan
+
+    </button>
+
+</form>
+
+{% if message %}
+
+<hr>
+
+<div class="alert alert-success">
+
+{{ message }}
+
+</div>
+
+{% endif %}
+
+{% endblock %}

@@ -23,4 +23,5 @@ urlpatterns = [
     path('api/users/',include('users.urls')),
     path('api/loans/',include('loans.urls')),
     path('api/chatbot/',include('chatbot.urls')),
+    path('',include('frontend.urls')),
 ]

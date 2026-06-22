@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Smart Recommendation</h2>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<input
+type="number"
+name="credit_score"
+class="form-control mb-2"
+placeholder="Credit Score">
+
+<input
+type="number"
+name="annual_income"
+class="form-control mb-2"
+placeholder="Annual Income">
+
+<input
+type="number"
+name="loan_amount"
+class="form-control mb-2"
+placeholder="Loan Amount">
+
+<button class="btn btn-success">
+Get Recommendation
+</button>
+
+</form>
+
+{% if result %}
+
+<hr>
+
+<h4>Prediction:</h4>
+
+<p>{{ result.prediction }}</p>
+
+<p>Risk Score:
+{{ result.risk_score }}</p>
+
+<p>Recommended Loan:
+{{ result.recommend_loan }}</p>
+
+<p>Interest Rate:
+{{ result.suggested_interest_rate }}</p>
+
+{% endif %}
+
+{% endblock %}
