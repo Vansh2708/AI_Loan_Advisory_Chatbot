@@ -157,46 +157,48 @@ def recommendation(request):
 def chatbot_page(request):
 
     reply = None
+    sources = []
 
     if request.method == "POST":
 
         token = request.session.get("access")
 
-        payload = {
-
-            "message":
-            request.POST["message"]
-
-        }
-
         response = requests.post(
 
-            "http://127.0.0.1:8000/api/chatbot/chat/",
+            "http://127.0.0.1:8000/api/chatbot/",
 
-            json=payload,
+            json={
+                "message": request.POST["message"]
+            },
 
             headers={
-                "Authorization":
-                f"Bearer {token}"
+                "Authorization": f"Bearer {token}"
             }
 
         )
+        print("Status Code:", response.status_code)
+        print("Response:")
+        print(response.text)
 
+        if response.status_code != 200:
+            return render(request, "chatbot.html", {
+        "reply": response.text
+    })
         data = response.json()
 
         reply = data.get("ai_reply")
 
+        sources = data.get("sources", [])
+
     return render(
-
         request,
-
         "chatbot.html",
-
         {
-            "reply": reply
+            "reply": reply,
+            "sources": sources
         }
     )
-
+    
 def login_page(request):
 
     if request.method == "POST":

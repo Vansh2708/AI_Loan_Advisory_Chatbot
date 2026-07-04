@@ -1,128 +1,66 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from dotenv import load_dotenv
-import google.generativeai as genai 
-import os
-load_dotenv()
-genai.configure(
-    api_key=os.getenv("GEMINI_API_KEY")
-)
-model=genai.GenerativeModel("gemini-3.5-flash")
+
+from rag.rag_pipeline import ask_rag
+
+
 class CustomLoanChatbotView(APIView):
 
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
-        message = request.data.get("message").lower()
+        message = request.data.get("message", "").strip()
 
-        
-        if "emi" in message:
+        if not message:
+            return Response({
+                "error": "Message is required."
+            }, status=400)
 
-            reply = (
-                "EMI means Equated Monthly Installment. "
-                "It is the fixed monthly payment made "
-                "towards loan repayment."
-            )
+        reply = ""
+        sources = []
 
-        
-        elif "credit score" in message:
+        try:
 
-            reply = (
-                "A credit score above 700 is considered good. "
-                "Higher scores improve loan approval chances."
-            )
+            lower_message = message.lower()
 
-        
-        elif "home loan" in message:
+            # Greeting only
+            if lower_message in [
+                "hi",
+                "hello",
+                "hey",
+                "good morning",
+                "good afternoon",
+                "good evening"
+            ]:
 
-            reply = (
-                "Home loans usually require stable income, "
-                "good credit history, and proper documents."
-            )
+                reply = (
+                    "Hello! I am your AI Loan Advisory Assistant. "
+                    "Ask me anything about loans, eligibility, EMI, "
+                    "interest rates, RBI guidelines, or loan documents."
+                )
 
-        
-        elif "personal loan" in message:
+            else:
 
-            reply = (
-                "Personal loans are unsecured loans "
-                "with flexible usage."
-            )
+                rag_response = ask_rag(message)
 
-        
-        elif "car loan" in message:
+                reply = rag_response["answer"]
 
-            reply = (
-                "Car loans help finance vehicle purchases "
-                "with monthly EMI payments."
-            )
+                sources = rag_response["sources"]
 
-        
-        elif "education loan" in message:
+        except Exception as e:
 
-            reply = (
-                "Education loans support tuition fees "
-                "and academic expenses."
-            )
-
-
-        elif "eligible" in message:
-
-            reply = (
-                "Loan eligibility depends on income, "
-                "credit score, employment status, "
-                "and repayment capacity."
-            )
-
-        
-        elif "interest" in message:
-
-            reply = (
-                "Interest rates depend on loan type, "
-                "credit score, and repayment duration."
-            )
-
-        
-        elif "hello" in message or "hi" in message:
-
-            reply = (
-                "Hello! I am your AI Loan Advisory Assistant. "
-                "How can I help you today?"
-            )
-
-        
-        else:
-            prompt = f"""
-            You are an AI Loan Advisory Assistant.
-            Answer in plain text.
-            Do not use markdown.
-            Do not use headings.
-            Do not use ** symbols.
-            Do not use bullet points.
-
-            Answer questions about:
-            - Loans
-            - EMI
-            - Banking
-            - Finance
-            - Credit Score
-            - Investments
-
-            User Question:
-            {message}
-            """
-            
-            try:
-                
-                response = model.generate_content(prompt)
-
-                reply = response.text
-            except Exception as e:
-                
-                reply = f"Gemini Error: {str(e)}"
+            return Response({
+                "error": str(e)
+            }, status=500)
 
         return Response({
+
             "user_message": message,
-            "ai_reply": reply
+
+            "ai_reply": reply,
+
+            "sources": sources
+
         })

@@ -29,3 +29,5 @@ Pillow
 openai-whisper
 gTTS
 google-generativeai
+
+langchain_google_genai

@@ -35,10 +35,30 @@
 
         <p>{{ reply }}</p>
 
+        {% if sources %}
+
+        <hr>
+
+        <h6>Sources</h6>
+
+        <ul>
+
+            {% for source in sources %}
+
+            <li>{{ source }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+        {% endif %}
+
     </div>
 
 </div>
 
 {% endif %}
+
+
 
 {% endblock %}
