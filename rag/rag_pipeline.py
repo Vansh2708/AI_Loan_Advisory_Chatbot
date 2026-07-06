@@ -43,7 +43,7 @@ retriever = vectorstore.as_retriever(
 
 llm = ChatGoogleGenerativeAI(
 
-    model="gemini-3.5-flash",
+    model="gemini-2.5-flash",
 
     google_api_key=os.getenv("GEMINI_API_KEY"),
 
@@ -68,13 +68,9 @@ def ask_rag(question):
 
     )
 
-    response = llm.invoke(prompt)
-
-    try:
-       answer = response[0]["text"]
-    except:
-       answer = str(response)
-
+    response= llm.invoke(prompt)
+    print("TYPE:", type(response.content))
+    print("CONTENT:", response.content)
     answer = response.content
     sources = []
 

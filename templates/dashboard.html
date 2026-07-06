@@ -2,82 +2,362 @@
 
 {% block content %}
 
-<h2>Dashboard</h2>
+<style>
 
-<div class="row mb-4">
+.hero-card{
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:white;
+    border-radius:20px;
+    padding:40px;
+    margin-bottom:35px;
+}
 
-    <div class="col-md-3">
-        <div class="card">
-            <div class="card-body">
-                <h4>{{total}}</h4>
-                <p>Total Loans</p>
-            </div>
-        </div>
-    </div>
+.stat-card{
+    border:none;
+    border-radius:18px;
+    transition:.3s;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
 
-    <div class="col-md-3">
-        <div class="card">
-            <div class="card-body">
-                <h4>{{approved}}</h4>
-                <p>Approved</p>
-            </div>
-        </div>
-    </div>
+.stat-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 18px 35px rgba(0,0,0,.18);
+}
 
-    <div class="col-md-3">
-        <div class="card">
-            <div class="card-body">
-                <h4>{{rejected}}</h4>
-                <p>Rejected</p>
-            </div>
-        </div>
-    </div>
+.action-card{
+    border:none;
+    border-radius:18px;
+    transition:.3s;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    height:220px;
+}
 
-    <div class="col-md-3">
-        <div class="card">
-            <div class="card-body">
-                <h4>{{pending}}</h4>
-                <p>Pending</p>
-            </div>
-        </div>
-    </div>
+.action-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 18px 35px rgba(0,0,0,.18);
+}
+
+.icon-circle{
+
+    width:65px;
+    height:65px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:30px;
+    color:white;
+    margin-bottom:20px;
+
+}
+
+.activity-card{
+
+    border:none;
+    border-radius:18px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+}
+
+</style>
+
+
+<!-- Hero Section -->
+
+<div class="hero-card">
+
+<h2>👋 Welcome Back, {{ user.username }}</h2>
+
+<p class="mb-4">
+
+Manage your loans smarter with AI-powered recommendations,
+document-based chatbot, and real-time loan tracking.
+
+</p>
+
+<a href="/apply-loan/" class="btn btn-light me-2">
+Apply Loan
+</a>
+
+<a href="/chatbot/" class="btn btn-warning">
+AI Chatbot
+</a>
 
 </div>
 
-<div class="row">
 
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-body">
-                <h5>Apply Loan</h5>
-                <a href="/apply-loan/" class="btn btn-success">
-                    Open
-                </a>
-            </div>
-        </div>
-    </div>
+<!-- Statistics -->
 
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-body">
-                <h5>Recommendations</h5>
-                <a href="/recommendation/" class="btn btn-warning">
-                    Open
-                </a>
-            </div>
-        </div>
-    </div>
+<div class="row g-4 mb-5">
 
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-body">
-                <h5>AI Chatbot</h5>
-                <a href="/chatbot/" class="btn btn-info">
-                    Open
-                </a>
-            </div>
-        </div>
-    </div>
+<div class="col-md-3">
+
+<div class="card stat-card">
+
+<div class="card-body">
+
+<div class="icon-circle bg-primary">
+📄
+</div>
+
+<h2>{{ total }}</h2>
+
+<p class="text-muted mb-0">
+Total Loans
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="col-md-3">
+
+<div class="card stat-card">
+
+<div class="card-body">
+
+<div class="icon-circle bg-success">
+✔
+</div>
+
+<h2>{{ approved }}</h2>
+
+<p class="text-muted mb-0">
+Approved
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="col-md-3">
+
+<div class="card stat-card">
+
+<div class="card-body">
+
+<div class="icon-circle bg-warning">
+⏳
+</div>
+
+<h2>{{ pending }}</h2>
+
+<p class="text-muted mb-0">
+Pending
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="col-md-3">
+
+<div class="card stat-card">
+
+<div class="card-body">
+
+<div class="icon-circle bg-danger">
+✖
+</div>
+
+<h2>{{ rejected }}</h2>
+
+<p class="text-muted mb-0">
+Rejected
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- Quick Actions -->
+
+<h3 class="mb-4">
+
+Quick Actions
+
+</h3>
+
+<div class="row g-4 mb-5">
+
+<div class="col-md-3">
+
+<div class="card action-card">
+
+<div class="card-body">
+
+<h4>📄 Apply Loan</h4>
+
+<p>
+
+Apply for Home, Personal,
+Education or Car Loan.
+
+</p>
+
+<a href="/apply-loan/"
+class="btn btn-success">
+
+Open
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="col-md-3">
+
+<div class="card action-card">
+
+<div class="card-body">
+
+<h4>🤖 AI Chatbot</h4>
+
+<p>
+
+Ask questions about loans,
+EMI, RBI rules and uploaded PDFs.
+
+</p>
+
+<a href="/chatbot/"
+class="btn btn-info">
+
+Open
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="col-md-3">
+
+<div class="card action-card">
+
+<div class="card-body">
+
+<h4>💡 Recommendation</h4>
+
+<p>
+
+Get AI-powered loan suggestions
+based on your profile.
+
+</p>
+
+<a href="/recommendation/"
+class="btn btn-warning">
+
+Open
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="col-md-3">
+
+<div class="card action-card">
+
+<div class="card-body">
+
+<h4>📋 My Loans</h4>
+
+<p>
+
+Track all loan applications
+and approval status.
+
+</p>
+
+<a href="/my-loans/"
+class="btn btn-primary">
+
+Open
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- Recent Activity -->
+
+<div class="card activity-card">
+
+<div class="card-body">
+
+<h3 class="mb-4">
+
+Recent Activity
+
+</h3>
+
+<ul class="list-group">
+
+<li class="list-group-item">
+
+✅ Dashboard Visited
+
+</li>
+
+<li class="list-group-item">
+
+🤖 AI Chatbot Available
+
+</li>
+
+<li class="list-group-item">
+
+💡 Recommendation Engine Ready
+
+</li>
+
+<li class="list-group-item">
+
+📄 Loan Tracking Enabled
+
+</li>
+
+</ul>
+
+</div>
 
 </div>
 

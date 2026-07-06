@@ -1,3 +1,5 @@
+import jwt
+from django.conf import settings
 from django.shortcuts import render,redirect
 from loans.models import Loan
 import requests
@@ -203,18 +205,16 @@ def login_page(request):
 
     if request.method == "POST":
 
+        username = request.POST["username"]
+        password = request.POST["password"]
+
         response = requests.post(
 
             "http://127.0.0.1:8000/api/users/login/",
 
             json={
-
-                "username":
-                request.POST["username"],
-
-                "password":
-                request.POST["password"]
-
+                "username": username,
+                "password": password
             }
 
         )
@@ -224,15 +224,14 @@ def login_page(request):
         if "access" in data:
 
             request.session["access"] = data["access"]
-
             request.session["refresh"] = data["refresh"]
+
+            
+            request.session["username"] = username
 
             return redirect("/dashboard/")
 
-    return render(
-        request,
-        "login.html"
-    )
+    return render(request, "login.html")
 
 def register_page(request):
 
@@ -276,3 +275,19 @@ def register_page(request):
             "message": message
         }
     )
+def profile(request):
+
+    if "access" not in request.session:
+        return redirect("/login/")
+
+    context = {
+        "username": request.session.get("username")
+    }
+
+    return render(request, "profile.html", context)
+
+def logout_page(request):
+
+    request.session.flush()
+
+    return redirect("/login/")
